@@ -1,0 +1,1750 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <!-- ============ ÍCONE DO APP ============ -->
+<link rel="apple-touch-icon" sizes="192x192" href="icone-app.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icone-app.png">
+<link rel="icon" type="image/png" sizes="32x32" href="d30.png">
+<link rel="icon" type="image/png" sizes="16x16" href="d30.png">
+<meta name="apple-mobile-web-app-title" content="Desafio 30 Dias">
+<meta name="application-name" content="Desafio 30 Dias">
+<meta name="theme-color" content="#667eea">
+<!-- ======================================= -->    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Desafio 30 Dias">
+    <title>Desafio 30 Dias - Disciplina</title>
+    <style>
+        * 
+        /* ========== ESTILOS DO PERFIL ========== */
+.profile-container {
+    background: white;
+    margin: 15px;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.profile-photo-container {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 15px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #667eea;
+    position: relative;
+    cursor: pointer;
+}
+
+.profile-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-photo-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    color: white;
+}
+
+.profile-edit-photo {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #4CAF50;
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    border: 3px solid white;
+}
+
+.profile-name {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin: 10px 0;
+}
+
+.profile-info {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 15px 0;
+    flex-wrap: wrap;
+}
+
+.profile-info-item {
+    text-align: center;
+}
+
+.profile-info-label {
+    font-size: 12px;
+    color: #666;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.profile-info-value {
+    font-size: 18px;
+    font-weight: bold;
+    color: #667eea;
+}
+
+.profile-edit-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: transform 0.2s;
+}
+
+.profile-edit-btn:active {
+    transform: scale(0.95);
+}
+
+/* Modal de Edição */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 3000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 400px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.modal-header h2 {
+    color: #333;
+    margin: 0;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+    font-size: 14px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.photo-upload-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.photo-upload-preview {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 10px;
+    border: 3px solid #667eea;
+}
+
+.photo-upload-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.photo-upload-btn {
+    background: #f0f0f0;
+    border: 2px dashed #667eea;
+    color: #667eea;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    display: inline-block;
+    transition: all 0.3s;
+}
+
+.photo-upload-btn:hover {
+    background: #e8eaf6;
+}
+
+.photo-upload-input {
+    display: none;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.modal-save {
+    flex: 1;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modal-cancel {
+    flex: 1;
+    background: #f0f0f0;
+    color: #666;
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Perfil na Header */
+.header-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    justify-content: center;
+}
+
+.header-profile-photo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid white;
+}
+
+.header-profile-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.header-profile-name {
+    font-size: 16px;
+    font-weight: 600;
+}
+        {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            max-width: 100%;
+            margin: 0 auto;
+            background: #f5f5f5;
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.3);
+            height: 8px;
+            border-radius: 4px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: #4CAF50;
+            height: 100%;
+            transition: width 0.3s ease;
+            border-radius: 4px;
+        }
+
+        .days-selector {
+            background: white;
+            padding: 15px;
+            margin: 15px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .day-btn {
+            aspect-ratio: 1;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .day-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+            transform: scale(1.1);
+        }
+
+        .day-btn.completed {
+            background: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+
+        .day-btn.current {
+            border-color: #ff9800;
+            border-width: 3px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .phase-info {
+            background: white;
+            margin: 15px;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .phase-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .fase-fundacao { background: #e8f5e9; color: #2e7d32; }
+        .fase-desconforto { background: #fff3e0; color: #e65100; }
+        .fase-extremo { background: #ffebee; color: #c62828; }
+        .fase-consolidacao { background: #e3f2fd; color: #1565c0; }
+
+        .activities-list {
+            background: white;
+            margin: 15px;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            background: #f9f9f9;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .activity-item.completed {
+            background: #e8f5e9;
+            border-color: #4CAF50;
+        }
+
+        .activity-checkbox {
+            width: 28px;
+            height: 28px;
+            border: 3px solid #ddd;
+            border-radius: 8px;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .activity-item.completed .activity-checkbox {
+            background: #4CAF50;
+            border-color: #4CAF50;
+        }
+
+        .checkmark {
+            color: white;
+            font-size: 18px;
+            display: none;
+        }
+
+        .activity-item.completed .checkmark {
+            display: block;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 3px;
+        }
+
+        .activity-desc {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .activity-item.completed .activity-title,
+        .activity-item.completed .activity-desc {
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .stats-card {
+            background: white;
+            margin: 15px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stats-number {
+            font-size: 36px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 10px 0;
+        }
+
+        .stats-label {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .special-challenge {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+            margin: 15px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(238,90,111,0.4);
+            text-align: center;
+        }
+
+        .special-challenge h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .special-challenge p {
+            font-size: 14px;
+            opacity: 0.95;
+        }
+
+        .reset-btn {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 20px 15px;
+            width: calc(100% - 30px);
+            box-shadow: 0 4px 10px rgba(244,67,54,0.3);
+        }
+
+        .tab-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 10px 20px;
+            font-size: 12px;
+            color: #999;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            color: #667eea;
+        }
+
+        .tab-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .celebration.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .celebration-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 90%;
+            animation: bounce 0.5s;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .celebration h2 {
+            color: #4CAF50;
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        .celebration p {
+            font-size: 16px;
+            color: #666;
+            margin: 10px 0;
+        }
+
+        .close-celebration {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 380px) {
+            .days-grid {
+                grid-template-columns: repeat(7, 1fr);
+                gap: 5px;
+            }
+            .day-btn {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+         <!-- Perfil do Usuário -->
+<div class="profile-container" id="profileContainer">
+    <div class="profile-photo-container" onclick="openEditProfile()">
+        <div class="profile-photo-placeholder" id="profilePhotoPlaceholder">
+            👤
+        </div>
+        <img class="profile-photo" id="profilePhoto" style="display: none;" alt="Foto de perfil">
+        <div class="profile-edit-photo">✏️</div>
+    </div>
+    <div class="profile-name" id="profileNameDisplay">Seu Nome</div>
+    <div class="profile-info">
+        <div class="profile-info-item">
+            <div class="profile-info-label">Peso Atual</div>
+            <div class="profile-info-value" id="profileWeightDisplay">-- kg</div>
+        </div>
+        <div class="profile-info-item">
+            <div class="profile-info-label">Início</div>
+            <div class="profile-info-value" id="profileStartDate">--</div>
+        </div>
+    </div>
+    <button class="profile-edit-btn" onclick="openEditProfile()">✏️ Editar Perfil</button>
+</div>
+
+<!-- Modal de Edição do Perfil -->
+<div class="modal" id="profileModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>✏️ Editar Perfil</h2>
+        </div>
+        
+        <div class="photo-upload-container">
+            <div class="photo-upload-preview" id="photoUploadPreview">
+                <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; font-size: 36px; color: white;">
+                    👤
+                </div>
+            </div>
+            <label class="photo-upload-btn">
+                📷 Escolher Foto
+                <input type="file" class="photo-upload-input" id="photoInput" accept="image/*">
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label for="inputName">👤 Nome Completo</label>
+            <input type="text" id="inputName" placeholder="Digite seu nome">
+        </div>
+
+        <div class="form-group">
+            <label for="inputWeight">⚖️ Peso (kg)</label>
+            <input type="number" id="inputWeight" placeholder="Ex: 70.5" step="0.1">
+        </div>
+
+        <div class="modal-actions">
+            <button class="modal-cancel" onclick="closeEditProfile()">Cancelar</button>
+            <button class="modal-save" onclick="saveProfile()">💾 Salvar</button>
+        </div>
+    </div>
+</div>
+        <div class="header">
+            <h1>🏆 Desafio 30 Dias</h1>
+            <p>Disciplina & Autocontrole</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="totalProgress" style="width: 0%"></div>
+            </div>
+            <p style="margin-top: 8px; font-size: 12px;">
+                <span id="completedDays">0</span> de 30 dias concluídos
+            </p>
+        </div>
+
+        <!-- Tab: Visão Geral -->
+        <div id="tab-overview" class="tab-content">
+            <div class="days-selector">
+                <h3 style="margin-bottom: 10px;">Selecione o Dia:</h3>
+                <div class="days-grid" id="daysGrid"></div>
+            </div>
+
+            <div class="phase-info" id="phaseInfo">
+                <span class="phase-badge fase-fundacao" id="phaseBadge">🟢 FUNDAÇÃO</span>
+                <h3 id="phaseTitle">Dias 1-7: Fundação</h3>
+                <p id="phaseDesc">Construindo a base da disciplina</p>
+            </div>
+
+            <div class="special-challenge" id="specialChallenge" style="display: none;">
+                <h3 id="specialTitle">🎯 Desafio Especial</h3>
+                <p id="specialDesc">Descrição do desafio</p>
+            </div>
+
+            <div class="activities-list" id="activitiesList">
+                <h3 style="margin-bottom: 15px;">Atividades do Dia:</h3>
+                <div id="activitiesContainer"></div>
+            </div>
+        </div>
+
+        <!-- Tab: Estatísticas -->
+        <div id="tab-stats" class="tab-content hidden">
+            <div class="stats-card">
+                <div class="stats-label">Progresso Total</div>
+                <div class="stats-number" id="totalPercent">0%</div>
+                <div class="stats-label">Concluído</div>
+            </div>
+
+            <div class="stats-card">
+                <div class="stats-label">Dias Completados</div>
+                <div class="stats-number" id="daysCompleted">0/30</div>
+                <div class="stats-label">Você está indo bem!</div>
+            </div>
+
+            <div class="stats-card">
+                <div class="stats-label">Atividades Concluídas</div>
+                <div class="stats-number" id="activitiesCompleted">0</div>
+                <div class="stats-label">de <span id="totalActivities">0</span> totais</div>
+            </div>
+
+            <div class="stats-card">
+                <div class="stats-label">Sequência Atual</div>
+                <div class="stats-number" id="currentStreak">0</div>
+                <div class="stats-label">dias consecutivos 🔥</div>
+            </div>
+        </div>
+
+        <!-- Tab: Configurações -->
+        <div id="tab-settings" class="tab-content hidden">
+            <div class="stats-card">
+                <h3 style="margin-bottom: 15px;">Como Instalar no iPhone:</h3>
+                <ol style="text-align: left; padding-left: 20px; line-height: 1.8;">
+                    <li>Toque no botão <strong>Compartilhar</strong> do Safari</li>
+                    <li>Role para baixo e toque em <strong>"Adicionar à Tela de Início"</strong></li>
+                    <li>Dê um nome ao app e toque em <strong>"Adicionar"</strong></li>
+                    <li>O app aparecerá na sua tela inicial!</li>
+                </ol>
+            </div>
+
+            <div class="stats-card">
+                <h3 style="margin-bottom: 15px;">Dicas de Uso:</h3>
+                <ul style="text-align: left; padding-left: 20px; line-height: 1.8;">
+                    <li>Marque as atividades conforme for completando</li>
+                    <li>O progresso é salvo automaticamente</li>
+                    <li>Funciona offline após carregar</li>
+                    <li>Volte sempre que precisar de motivação</li>
+                </ul>
+            </div>
+
+            <button class="reset-btn" onclick="resetAllData()">
+                🔄 Reiniciar Todo o Desafio
+            </button>
+        </div>
+
+        <!-- Tab Bar -->
+        <div class="tab-bar">
+            <button class="tab-btn active" onclick="switchTab('overview')">
+                <span class="tab-icon">📅</span>
+                <span>Dias</span>
+            </button>
+            <button class="tab-btn" onclick="switchTab('stats')">
+                <span class="tab-icon">📊</span>
+                <span>Estatísticas</span>
+            </button>
+            <button class="tab-btn" onclick="switchTab('settings')">
+                <span class="tab-icon">⚙️</span>
+                <span>Ajuda</span>
+            </button>
+        </div>
+
+        <!-- Celebration Modal -->
+        <div class="celebration" id="celebration">
+            <div class="celebration-content">
+                <h2>🎉 Parabéns!</h2>
+                <p id="celebrationText">Você completou o dia!</p>
+                <p>Você está ficando mais forte a cada dia!</p>
+                <button class="close-celebration" onclick="closeCelebration()">Continuar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dados dos 30 dias
+        const challengeData = {
+            1: {
+                phase: 'fundacao',
+                phaseName: '🟢 FUNDAÇÃO',
+                phaseTitle: 'Dias 1-7: Fundação',
+                phaseDesc: 'Construindo a base da disciplina',
+                special: null,
+                activities: [
+                    { id: 'acordar', title: '🌅 Acordar às 05h', desc: 'Sem soneca' },
+                    { id: 'banho', title: '🚿 Banho gelado', desc: 'Controle respiração' },
+                    { id: 'caminhada', title: '🚶 Caminhada 30-50min', desc: 'Sozinho/sem música' },
+                    { id: 'treino', title: '🏋️ Treino silêncio', desc: 'Sem música' },
+                    { id: 'silencio', title: '🧘 1h silêncio', desc: 'Sem música/celular' },
+                    { id: 'acucar', title: '🍬 Sem açúcar', desc: 'Dia 1 de 21' },
+                    { id: 'redes', title: '📵 Sem redes sociais', desc: 'Dia 1 de 7' }
+                ]
+            },
+            2: {
+                phase: 'fundacao',
+                phaseName: '🟢 FUNDAÇÃO',
+                phaseTitle: 'Dias 1-7: Fundação',
+                phaseDesc: 'Construindo a base da disciplina',
+                special: null,
+                activities: [
+                    { id: 'acordar', title: '🌅 Acordar às 05h', desc: 'Sem soneca' },
+                    { id: 'banho', title: '🚿 Banho gelado', desc: 'Controle respiração' },
+                    { id: 'caminhada', title: '🚶 Caminhada 30-50min', desc: 'Sozinho/sem música' },
+                    { id: 'treino', title: '🏋️ Treino silêncio', desc: 'Sem música' },
+                    { id: 'silencio', title: '🧘 1h silêncio', desc: 'Sem música/celular' },
+                    { id: 'acucar', title: '🍬 Sem açúcar', desc: 'Dia 2 de 21' },
+                    { id: 'redes', title: '📵 Sem redes sociais', desc: 'Dia 2 de 7' },
+                    { id: 'olhos', title: '👁️ Encarar olhos', desc: '10 min no espelho' }
+                ]
+            },
+            3: {
+                phase: 'fundacao',
+                phaseName: '🟢 FUNDAÇÃO',
+                phaseTitle: 'Dias 1-7: Fundação',
+                phaseDesc: 'Construindo a base da disciplina',
+                special: null,
+                activities: [
+                    { id: 'acordar', title: '🌅 Acordar às 05h', desc: 'Sem soneca' },
+                    { id: 'banho', title: '🚿 Banho gelado', desc: 'Controle respiração' },
+                    { id: 'caminhada', title: '🚶 Caminhada 30-50min', desc: 'Sozinho/sem música' },
+                    { id: 'treino', title: '🏋️ Treino silêncio', desc: 'Sem música' },
+                    { id: 'silencio', title: '🧘 1h silêncio', desc: 'Sem música/celular' },
+                    { id: 'acucar', title: '🍬 Sem açúcar', desc: 'Dia 3 de 21' },
+                    { id: 'redes', title: '📵 Sem redes sociais', desc: 'Dia 3 de 7' },
+                    { id: 'olhos', title: '👁️ Encarar olhos', desc: '10 min no espelho' }
+                ]
+            },
+            4: {
+                phase: 'fundacao',
+                phaseName: '🟢 FUNDAÇÃO',
+                phaseTitle: 'Dias 1-7: Fundação',
+                phaseDesc: 'Construindo a base da disciplina',
+                special: '🛏️ Dormir no chão (início - 7 dias)',
+                activities: [
+                    { id: 'acordar', title: '🌅 Acordar às 05h', desc: 'Sem soneca' },
+                    { id: 'banho', title: '🚿 Banho gelado', desc: 'Controle respiração' },
+                    { id: 'caminhada', title: '🚶 Caminhada 30-50min', desc: 'Sozinho/sem música' },
+                    { id: 'treino', title: '🏋️ Treino silêncio', desc: 'Sem música' },
+                    { id: 'silencio', title: '🧘 1h silêncio', desc: 'Sem música/celular' },
+                    { id: 'acucar', title: '🍬 Sem açúcar', desc: 'Dia 4 de 21' },
+                    { id: 'redes', title: '📵 Sem redes sociais', desc: 'Dia 4 de 7' },
+                    { id: 'olhos', title: '👁️ Encarar olhos', desc: '10 min no espelho' },
+                    { id: 'chao', title: '🛏️ Dormir no chão', desc: 'Noite 1 de 7' }
+                ]
+            },
+            5: {
+                phase: 'fundacao',
+                phaseName: '🟢 FUNDAÇÃO',
+                phaseTitle: 'Dias 1-7: Fundação',
+                phaseDesc: 'Construindo a base da disciplina',
+                special: null,
+                activities: [
+                    { id: 'acordar', title: '🌅 Acordar às 05h', desc: 'Sem soneca' },
+                    { id: 'banho', title: '🚿 Banho gelado', desc: 'Controle respiração' },
+                    { id: 'caminhada', title: '🚶 Caminhada 30-50min', desc: 'Sozinho/sem música' },
+                    { id: 'treino', title: '🏋️ Treino silêncio', desc: 'Sem música' },
+                    { id: 'silencio', title: '🧘 1h silêncio', desc: 'Sem música/celular' },
+                    { id: 'acucar', title: '🍬 Sem açúcar', desc: 'Dia 5 de 21' },
+                    { id: 'redes', title: '📵 Sem redes sociais', desc: 'Dia 5 de 7' },
+                    { id: 'olhos', title: '👁️ Encarar olhos', desc: '10 min no espelho' },
+                    { id: 'chao', title: '🛏️ Dormir no chão', desc: 'Noite 2 de 7' }
+                ]
+            },
+            6: {
+                phase: 'fundacao',
+                phaseName: '🟢 FUNDAÇÃO',
+                phaseTitle: 'Dias 1-7: Fundação',
+                phaseDesc: 'Construindo a base da disciplina',
+                special: null,
+                activities: [
+                    { id: 'acordar', title: '🌅 Acordar às 05h', desc: 'Sem soneca' },
+                    { id: 'banho', title: '🚿 Banho gelado', desc: 'Controle respiração' },
+                    { id: 'caminhada', title: '🚶 Caminhada 30-50min', desc: 'Sozinho/sem música' },
+                    { id: 'treino', title: '🏋️ Treino silêncio', desc: 'Sem música' },
+                    { id: 'silencio', title: '🧘 1h silêncio', desc: 'Sem música/celular' },
+                    { id: 'acucar', title: '🍬 Sem açúcar', desc: 'Dia 6 de 21' },
+                    { id: 'redes', title: '📵 Sem redes sociais', desc: 'Dia 6 de 7' },
+                    { id: 'olhos', title: '👁️ Encarar olhos', desc: '10 min no espelho' },
+                    { id: 'chao', title: '🛏️ Dormir no chão', desc: 'Noite 3 de 7' }
+                ]
+            },
+            7: {
+                phase: 'fundacao',
+                phaseName: '🟢 FUNDAÇÃO',
+                phaseTitle: 'Dias 1-7: Fundação',
+                phaseDesc: 'Construindo a base da disciplina',
+                special: '✅ Fim: 7 dias sem redes sociais',
+                activities: [
+                    { id: 'acordar', title: '🌅 Acordar às 05h', desc: 'Sem soneca' },
+                    { id: 'banho', title: '🚿 Banho gelado', desc: 'Controle respiração' },
+                    { id: 'caminhada', title: '🚶 Caminhada 30-50min', desc: 'Sozinho/sem música' },
+                    { id: 'treino', title: '🏋️ Treino silêncio', desc: 'Sem música' },
+                    { id: 'silencio', title: '🧘 1h silêncio', desc: 'Sem música/celular' },
+                    { id: 'acucar', title: '🍬 Sem açúcar', desc: 'Dia 7 de 21' },
+                    { id: 'olhos', title: '👁️ Encarar olhos', desc: '10 min no espelho' },
+                    { id: 'chao', title: '🛏️ Dormir no chão', desc: 'Noite 4 de 7' }
+                ]
+            },
+            8: {
+                phase: 'desconforto',
+                phaseName: '🟡 DESCONFORTO',
+                phaseTitle: 'Dias 8-14: Desconforto Controlado',
+                phaseDesc: 'Aprofundando a resiliência',
+                special: null,
+                activities: [
+                    { id: 'acordar', title: '🌅 Acordar às 05h', desc: 'Sem soneca' },
+                    { id: 'banho', title: '🚿 Banho gelado', desc: 'Controle respiração' },
+                    { id: 'caminhada', title: '🚶 Caminhada 30-50min', desc: 'Sozinho/sem música' },
+                    { id: 'treino', title: '🏋️ Treino silêncio', desc: 'Sem música' },
+                    { id: 'silencio', title: '🧘 1h silêncio', desc: 'Sem música/celular' },
+                    { id: 'acucar', title: '🍬 Sem açúcar', desc: 'Dia 8 de 21' },
+                    { id: 'olhos', title: '👁️ Encarar olhos', desc: '10 min no espelho' },
+                    { id: 'chao', title: '🛏️ Dormir no chão', desc: 'Noite 5 de 7' }
+                ]
+            },
+            9: {
+                phase: 'desconforto',
+                phaseName: '🟡 DESCONFORTO',
+                phaseTitle: 'Dias 8-14: Desconforto Controlado',
+                phaseDesc: 'Aprofundando a resiliência',
+                special: null,
+                activities: [
+                    { id: 'acordar', title: '🌅 Acordar às 05h', desc: 'Sem soneca' },
+                    { id: 'banho', title: '🚿 Banho gelado', desc: 'Controle respiração' },
+                    { id: 'caminhada', title: '🚶 Caminhada 30-50min', desc: 'Sozinho/sem música' },
+                    { id: 'treino', title: '🏋️ Treino silêncio', desc: 'Sem música' },
+                    { id: 'silencio', title: '🧘 1h silêncio', desc: 'Sem música/celular' },
+                    { id: 'acucar', title: '🍬 Sem açúcar', desc: 'Dia 9 de 21' },
+                    { id: 'olhos', title: '👁️ Encarar olhos', desc: '10 min no espelho' },
+                    { id: 'chao', title: '🛏️ Dormir no chão', desc: 'Noite 6 de 7' }
+                ]
+            },
+            10: {
+                phase: 'desconforto',
+                phaseName: '🟡 DESCONFORTO',
+                phaseTitle: 'Dias 8-14: Desconforto Controlado',
+                phaseDesc: 'Aprofundando a resiliência',
+                special: null,
+                activities: [
+                    { id: 'acordar', title: '🌅 Acordar às 05h', desc: 'Sem soneca' },
+                    { id: 'banho', title: '🚿 Banho gelado', desc: 'Controle respiração' },
+                    { id: 'caminhada', title: '🚶 Caminhada 30-50min', desc: 'Sozinho/sem música' },
+                    { id: 'treino', title: '🏋️ Treino silêncio', desc: 'Sem música' },
+                    { id: 'silencio', title: '🧘 1h silêncio', desc: 'Sem música/celular' },
+                    { id: 'acucar', title: '🍬 Sem açúcar', desc: 'Dia 10 de 21' },
+                    { id: 'olhos', title: '👁️ Encarar olhos', desc: '10 min no espelho' },
+                    { id: 'chao', title: '🛏️ Dormir no chão', desc: 'Noite 7 de 7' }
+                ]
+            },
+            11: {
+                phase: 'desconforto',
+                phaseName: '🟡 DESCONFORTO',
+                phaseTitle: 'Dias 8-14: Desconforto Controlado',
+                phaseDesc: 'Aprofundando a resiliência',
+                special: null,
+                activities: [
+                    { id: 'acordar', title: '🌅 Acordar às 05h', desc: 'Sem soneca' },
+                    { id: 'banho', title: '🚿 Banho gelado', desc: 'Controle respiração' },
+                    { id: 'caminhada', title: '🚶 Caminhada 30-50min', desc: 'Sozinho/sem música' },
+                    { id: 'treino', title: '🏋️ Treino silêncio', desc: 'Sem música' },
+                    { id: 'silencio', title: '🧘 1h silêncio', desc: 'Sem música/celular' },
+                    { id: 'acucar', title: '🍬 Sem açúcar', desc: 'Dia 11 de 21' },
+                    { id: 'olhos', title: '👁️ Encarar olhos', desc: '10 min no espelho' }
+                ]
+            },
+            12: {
+                phase: 'desconforto',
+                phaseName: '🟡 DESCONFORTO',
+                phaseTitle: 'Dias 8-14: Desconforto Controlado',
+                phaseDesc: 'Aprofundando a resiliência',
+                special: null,
+                activities: [
+                    { id: 'acordar', title: '🌅 Acordar às 05h', desc: 'Sem soneca' },
+                    { id: 'banho', title: '🚿 Banho gelado', desc: 'Controle respiração' },
+                    { id: 'caminhada', title: '🚶 Caminhada 30-50min', desc: 'Sozinho/sem música' },
+                    { id: 'treino', title: '🏋️ Treino silêncio', desc: 'Sem música' },
+                    { id: 'silencio', title: '🧘 1h silêncio', desc: 'Sem música/celular' },
+                    { id: 'acucar', title: '🍬 Sem açúcar', desc: 'Dia 12 de 21' },
+                    { id: 'olhos', title: '👁️ Encarar olhos', desc: '10 min no espelho' }
+                ]
+            },
+            13: {
+                phase: 'desconforto',
+                phaseName: '🟡 DESCONFORTO',
+                phaseTitle: 'Dias 8-14: Desconforto Controlado',
+                phaseDesc: 'Aprofundando a resiliência',
+                special: null,
+                activities: [
+                    { id: 'acordar', title: '🌅 Acordar às 05h', desc: 'Sem soneca' },
+                    { id: 'banho', title: '🚿 Banho gelado', desc: 'Controle respiração' },
+                    { id: 'caminhada', title: '🚶 Caminhada 30-50min', desc: 'Sozinho/sem música' },
+                    { id: 'treino', title: '🏋️ Treino silêncio', desc: 'Sem música' },
+                    { id: 'silencio', title: '🧘 1h silêncio', desc: 'Sem música/celular' },
+                    { id: 'acucar', title: '🍬 Sem açúcar', desc: 'Dia 13 de 21' },
+                    { id: 'olhos', title: '👁️ Encarar olhos', desc: '10 min no espelho' }
+                ]
+            },
+            14: {
+                phase: 'desconforto',
+                phaseName: '🟡 DESCONFORTO',
+                phaseTitle: 'Dias 8-14: Desconforto Controlado',
+                phaseDesc: 'Aprofundando a resiliência',
+                special: '✅ Fim: Dormir no chão',
+                activities: [
+                    { id: 'acordar', title: '🌅 Acordar às 05h', desc: 'Sem soneca' },
+                    { id: 'banho', title: '🚿 Banho gelado', desc: 'Controle respiração' },
+                    { id: 'caminhada', title: '🚶 Caminhada 30-50min', desc: 'Sozinho/sem música' },
+                    { id: 'treino', title: '🏋️ Treino silêncio', desc: 'Sem música' },
+                    { id: 'silencio', title: '🧘 1h silêncio', desc: 'Sem música/celular' },
+                    { id: 'acucar', title: '🍬 Sem açúcar', desc: 'Dia 14 de 21' },
+                    { id: 'olhos', title: '👁️ Encarar olhos', desc: '10 min no espelho' }
+                ]
+            },
+            15: {
+                phase: 'extremo',
+                phaseName: '🔴 EXTREMO',
+                phaseTitle: 'Dias 15-21: Desafios Extremos',
+                phaseDesc: 'Testando o limite mental',
+                special: '🔥 48h OFFLINE (início - sem internet)',
+                activities: [
+                    { id: 'acordar', title: '🌅 Acordar às 05h', desc: 'Sem soneca' },
+                    { id: 'banho', title: '🚿 Banho gelado', desc: 'Controle respiração' },
+                    { id: 'caminhada', title: '🚶 Caminhada 30-50min', desc: 'Sozinho/sem música' },
+                    { id: 'treino', title: '🏋️ Treino silêncio', desc: 'Sem música' },
+                    { id: 'silencio', title: '🧘 1h silêncio', desc: 'Sem música/celular' },
+                    { id: 'acucar', title: '🍬 Sem açúcar', desc: 'Dia 15 de 21' },
+                    { id: 'olhos', title: '👁️ Encarar olhos', desc: '10 min no espelho' }
+                ]
+            },
+            16: {
+                phase: 'extremo',
+                phaseName: '🔴 EXTREMO',
+                phaseTitle: 'Dias 15-21: Desafios Extremos',
+                phaseDesc: 'Testando o limite mental',
+                special: '🔥 48h OFFLINE (dia 2)',
+                activities: [
+                    { id: 'acordar', title: '🌅 Acordar às 05h', desc: 'Sem soneca' },
+                    { id: 'banho', title: '🚿 Banho gelado', desc: 'Controle respiração' },
+                    { id: 'caminhada', title: '🚶 Caminhada 30-50min', desc: 'Sozinho/sem música' },
+                    { id: 'treino', title: '🏋️ Treino silêncio', desc: 'Sem música' },
+                    { id: 'silencio', title: '🧘 1h silêncio', desc: 'Sem música/celular' },
+                    { id: 'acucar', title: '🍬 Sem açúcar', desc: 'Dia 16 de 21' },
+                    { id: 'olhos', title: '👁️ Encarar olhos', desc: '10 min no espelho' }
+                ]
+            },
+            17: {
+                phase: 'extremo',
+                phaseName: '🔴 EXTREMO',
+                phaseTitle: 'Dias 15-21: Desafios Extremos',
+                phaseDesc: 'Testando o limite mental',
+                special: '💧 JEJUM 24h (só água)',
+                activities: [
+                    { id: 'acordar', title: '🌅 Acordar às 05h', desc: 'Sem soneca' },
+                    { id: 'banho', title: '🚿 Banho gelado', desc: 'Controle respiração' },
+                    { id: 'caminhada', title: '🚶 Caminhada 30-50min', desc: 'Sozinho/sem música' },
+                    { id: 'treino', title: '🏋️ Treino silêncio', desc: 'Sem música' },
+                    { id: 'silencio', title: '🧘 1h silêncio', desc: 'Sem música/celular' },
+                    { id: 'acucar', title: '🍬 Sem açúcar', desc: 'Dia 17 de 21' },
+                    { id: 'olhos', title: '👁️ Encarar olhos', desc: '10 min no espelho' },
+                    { id: 'jejum', title: '💧 Jejum 24h', desc: 'Apenas água' }
+                ]
+            },
+            18: {
+                phase: 'extremo',
+                phaseName: '🔴 EXTREMO',
+                phaseTitle: 'Dias 15-21: Desafios Extremos',
+                phaseDesc: 'Testando o limite mental',
+                special: '📱 24h SEM CELULAR',
+                activities: [
+                    { id: 'acordar', title: '🌅 Acordar às 05h', desc: 'Sem soneca' },
+                    { id: 'banho', title: '🚿 Banho gelado', desc: 'Controle respiração' },
+                    { id: 'caminhada', title: '🚶 Caminhada 30-50min', desc: 'Sozinho/sem música' },
+                    { id: 'treino', title: '🏋️ Treino silêncio', desc: 'Sem música' },
+                    { id: 'silencio', title: '🧘 1h silêncio', desc: 'Sem música/celular' },
+                    { id: 'acucar', title: '🍬 Sem açúcar', desc: 'Dia 18 de 21' },
+                    { id: 'olhos', title: '👁️ Encarar olhos', desc: '10 min no espelho' },
+                    { id: 'celular', title: '📱 Sem celular', desc: '24h completas' }
+                ]
+            },
+            19: {
+                phase: 'extremo',
+                phaseName: '🔴 EXTREMO',
+                phaseTitle: 'Dias 15-21: Desafios Extremos',
+                phaseDesc: 'Testando o limite mental',
+                special: '🚶 SAIR SOZINHO SEM CELULAR',
+                activities: [
+                    { id: 'acordar', title: '🌅 Acordar às 05h', desc: 'Sem soneca' },
+                    { id: 'banho', title: '🚿 Banho gelado', desc: 'Controle respiração' },
+                    { id: 'caminhada', title: '🚶 Caminhada 30-50min', desc: 'Sozinho/sem música' },
+                    { id: 'treino', title: '🏋️ Treino silêncio', desc: 'Sem música' },
+                    { id: 'silencio', title: '🧘 1h silêncio', desc: 'Sem música/celular' },
+                    { id: 'acucar', title: '🍬 Sem açúcar', desc: 'Dia 19 de 21' },
+                    { id: 'olhos', title: '👁️ Encarar olhos', desc: '10 min no espelho' },
+                    { id: 'sair', title: '🚶 Sair sozinho', desc: 'Sem celular' }
+                ]
+            },
+            20: {
+                phase: 'extremo',
+                phaseName: '🔴 EXTREMO',
+                phaseTitle: 'Dias 15-21: Desafios Extremos',
+                phaseDesc: 'Testando o limite mental',
+                special: '🤐 24h SEM FALAR',
+                activities: [
+                    { id: 'acordar', title: '🌅 Acordar às 05h', desc: 'Sem soneca' },
+                    { id: 'banho', title: '🚿 Banho gelado', desc: 'Controle respiração' },
+                    { id: 'caminhada', title: '🚶 Caminhada 30-50min', desc: 'Sozinho/sem música' },
+                    { id: 'treino', title: '🏋️ Treino silêncio', desc: 'Sem música' },
+                    { id: 'silencio', title: '🧘 1h silêncio', desc: 'Sem música/celular' },
+                    { id: 'acucar', title: '🍬 Sem açúcar', desc: 'Dia 20 de 21' },
+                    { id: 'olhos', title: '👁️ Encarar olhos', desc: '10 min no espelho' },
+                    { id: 'falar', title: '🤐 Sem falar', desc: '24h completas' }
+                ]
+            },
+            21: {
+                phase: 'extremo',
+                phaseName: '🔴 EXTREMO',
+                phaseTitle: 'Dias 15-21: Desafios Extremos',
+                phaseDesc: 'Testando o limite mental',
+                special: '📚 LER 1 LIVRO EM 1 DIA + ✅ Fim: 21 dias sem açúcar',
+                activities: [
+                    { id: 'acordar', title: '🌅 Acordar às 05h', desc: 'Sem soneca' },
+                    { id: 'banho', title: '🚿 Banho gelado', desc: 'Controle respiração' },
+                    { id: 'caminhada', title: '🚶 Caminhada 30-50min', desc: 'Sozinho/sem música' },
+                    { id: 'treino', title: '🏋️ Treino silêncio', desc: 'Sem música' },
+                    { id: 'silencio', title: '🧘 1h silêncio', desc: 'Sem música/celular' },
+                    { id: 'olhos', title: '👁️ Encarar olhos', desc: '10 min no espelho' },
+                    { id: 'livro', title: '📚 Ler 1 livro', desc: 'Inteiro em 1 dia' }
+                ]
+            },
+            22: {
+                phase: 'consolidacao',
+                phaseName: '🔵 CONSOLIDAÇÃO',
+                phaseTitle: 'Dias 22-30: Consolidação',
+                phaseDesc: 'Transformando em hábito',
+                special: null,
+                activities: [
+                    { id: 'acordar', title: '🌅 Acordar às 05h', desc: 'Sem soneca' },
+                    { id: 'banho', title: '🚿 Banho gelado', desc: 'Controle respiração' },
+                    { id: 'caminhada', title: '🚶 Caminhada 30-50min', desc: 'Sozinho/sem música' },
+                    { id: 'treino', title: '🏋️ Treino silêncio', desc: 'Sem música' },
+                    { id: 'silencio', title: '🧘 1h silêncio', desc: 'Sem música/celular' },
+                    { id: 'olhos', title: '👁️ Encarar olhos', desc: '10 min no espelho' }
+                ]
+            },
+            23: {
+                phase: 'consolidacao',
+                phaseName: '🔵 CONSOLIDAÇÃO',
+                phaseTitle: 'Dias 22-30: Consolidação',
+                phaseDesc: 'Transformando em hábito',
+                special: null,
+                activities: [
+                    { id: 'acordar', title: '🌅 Acordar às 05h', desc: 'Sem soneca' },
+                    { id: 'banho', title: '🚿 Banho gelado', desc: 'Controle respiração' },
+                    { id: 'caminhada', title: '🚶 Caminhada 30-50min', desc: 'Sozinho/sem música' },
+                    { id: 'treino', title: '🏋️ Treino silêncio', desc: 'Sem música' },
+                    { id: 'silencio', title: '🧘 1h silêncio', desc: 'Sem música/celular' },
+                    { id: 'olhos', title: '👁️ Encarar olhos', desc: '10 min no espelho' }
+                ]
+            },
+            24: {
+                phase: 'consolidacao',
+                phaseName: '🔵 CONSOLIDAÇÃO',
+                phaseTitle: 'Dias 22-30: Consolidação',
+                phaseDesc: 'Transformando em hábito',
+                special: null,
+                activities: [
+                    { id: 'acordar', title: '🌅 Acordar às 05h', desc: 'Sem soneca' },
+                    { id: 'banho', title: '🚿 Banho gelado', desc: 'Controle respiração' },
+                    { id: 'caminhada', title: '🚶 Caminhada 30-50min', desc: 'Sozinho/sem música' },
+                    { id: 'treino', title: '🏋️ Treino silêncio', desc: 'Sem música' },
+                    { id: 'silencio', title: '🧘 1h silêncio', desc: 'Sem música/celular' },
+                    { id: 'olhos', title: '👁️ Encarar olhos', desc: '10 min no espelho' }
+                ]
+            },
+            25: {
+                phase: 'consolidacao',
+                phaseName: '🔵 CONSOLIDAÇÃO',
+                phaseTitle: 'Dias 22-30: Consolidação',
+                phaseDesc: 'Transformando em hábito',
+                special: null,
+                activities: [
+                    { id: 'acordar', title: '🌅 Acordar às 05h', desc: 'Sem soneca' },
+                    { id: 'banho', title: '🚿 Banho gelado', desc: 'Controle respiração' },
+                    { id: 'caminhada', title: '🚶 Caminhada 30-50min', desc: 'Sozinho/sem música' },
+                    { id: 'treino', title: '🏋️ Treino silêncio', desc: 'Sem música' },
+                    { id: 'silencio', title: '🧘 1h silêncio', desc: 'Sem música/celular' },
+                    { id: 'olhos', title: '👁️ Encarar olhos', desc: '10 min no espelho' }
+                ]
+            },
+            26: {
+                phase: 'consolidacao',
+                phaseName: '🔵 CONSOLIDAÇÃO',
+                phaseTitle: 'Dias 22-30: Consolidação',
+                phaseDesc: 'Transformando em hábito',
+                special: null,
+                activities: [
+                    { id: 'acordar', title: '🌅 Acordar às 05h', desc: 'Sem soneca' },
+                    { id: 'banho', title: '🚿 Banho gelado', desc: 'Controle respiração' },
+                    { id: 'caminhada', title: '🚶 Caminhada 30-50min', desc: 'Sozinho/sem música' },
+                    { id: 'treino', title: '🏋️ Treino silêncio', desc: 'Sem música' },
+                    { id: 'silencio', title: '🧘 1h silêncio', desc: 'Sem música/celular' },
+                    { id: 'olhos', title: '👁️ Encarar olhos', desc: '10 min no espelho' }
+                ]
+            },
+            27: {
+                phase: 'consolidacao',
+                phaseName: '🔵 CONSOLIDAÇÃO',
+                phaseTitle: 'Dias 22-30: Consolidação',
+                phaseDesc: 'Transformando em hábito',
+                special: null,
+                activities: [
+                    { id: 'acordar', title: '🌅 Acordar às 05h', desc: 'Sem soneca' },
+                    { id: 'banho', title: '🚿 Banho gelado', desc: 'Controle respiração' },
+                    { id: 'caminhada', title: '🚶 Caminhada 30-50min', desc: 'Sozinho/sem música' },
+                    { id: 'treino', title: '🏋️ Treino silêncio', desc: 'Sem música' },
+                    { id: 'silencio', title: '🧘 1h silêncio', desc: 'Sem música/celular' },
+                    { id: 'olhos', title: '👁️ Encarar olhos', desc: '10 min no espelho' }
+                ]
+            },
+            28: {
+                phase: 'consolidacao',
+                phaseName: '🔵 CONSOLIDAÇÃO',
+                phaseTitle: 'Dias 22-30: Consolidação',
+                phaseDesc: 'Transformando em hábito',
+                special: null,
+                activities: [
+                    { id: 'acordar', title: '🌅 Acordar às 05h', desc: 'Sem soneca' },
+                    { id: 'banho', title: '🚿 Banho gelado', desc: 'Controle respiração' },
+                    { id: 'caminhada', title: '🚶 Caminhada 30-50min', desc: 'Sozinho/sem música' },
+                    { id: 'treino', title: '🏋️ Treino silêncio', desc: 'Sem música' },
+                    { id: 'silencio', title: '🧘 1h silêncio', desc: 'Sem música/celular' },
+                    { id: 'olhos', title: '👁️ Encarar olhos', desc: '10 min no espelho' }
+                ]
+            },
+            29: {
+                phase: 'consolidacao',
+                phaseName: '🔵 CONSOLIDAÇÃO',
+                phaseTitle: 'Dias 22-30: Consolidação',
+                phaseDesc: 'Transformando em hábito',
+                special: null,
+                activities: [
+                    { id: 'acordar', title: '🌅 Acordar às 05h', desc: 'Sem soneca' },
+                    { id: 'banho', title: '🚿 Banho gelado', desc: 'Controle respiração' },
+                    { id: 'caminhada', title: '🚶 Caminhada 30-50min', desc: 'Sozinho/sem música' },
+                    { id: 'treino', title: '🏋️ Treino silêncio', desc: 'Sem música' },
+                    { id: 'silencio', title: '🧘 1h silêncio', desc: 'Sem música/celular' },
+                    { id: 'olhos', title: '👁️ Encarar olhos', desc: '10 min no espelho' }
+                ]
+            },
+            30: {
+                phase: 'consolidacao',
+                phaseName: '🎉 CONCLUSÃO',
+                phaseTitle: 'Dia 30: Conclusão',
+                phaseDesc: 'Você completou o desafio!',
+                special: '🎊 PARABÉNS! VOCÊ CONSEGUIU!',
+                activities: [
+                    { id: 'acordar', title: '🌅 Acordar às 05h', desc: 'Sem soneca' },
+                    { id: 'banho', title: '🚿 Banho gelado', desc: 'Controle respiração' },
+                    { id: 'caminhada', title: '🚶 Caminhada 30-50min', desc: 'Sozinho/sem música' },
+                    { id: 'treino', title: '🏋️ Treino silêncio', desc: 'Sem música' },
+                    { id: 'silencio', title: '🧘 1h silêncio', desc: 'Sem música/celular' },
+                    { id: 'olhos', title: '👁️ Encarar olhos', desc: '10 min no espelho' }
+                ]
+            }
+        };
+
+        // Estado atual
+        let currentDay = 1;
+        let userData = {};
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            loadData();
+            renderDaysGrid();
+            loadDay(1);
+            updateStats();
+            
+            // Detectar dia atual baseado na data de início
+            const startDate = userData.startDate || new Date().toISOString().split('T')[0];
+            const today = new Date();
+            const start = new Date(startDate);
+            const diffTime = Math.abs(today - start);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays <= 30 && diffDays > 0) {
+                currentDay = diffDays;
+                loadDay(currentDay);
+            }
+        });
+
+        function loadData() {
+            const saved = localStorage.getItem('desafio30dias');
+            if (saved) {
+                userData = JSON.parse(saved);
+            } else {
+                userData.startDate = new Date().toISOString().split('T')[0];
+                saveData();
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem('desafio30dias', JSON.stringify(userData));
+        }
+
+        function renderDaysGrid() {
+            const grid = document.getElementById('daysGrid');
+            grid.innerHTML = '';
+            
+            for (let i = 1; i <= 30; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'day-btn';
+                btn.textContent = i;
+                
+                if (i === currentDay) {
+                    btn.classList.add('current');
+                }
+                
+                if (userData[`day${i}`] && userData[`day${i}`].completed) {
+                    btn.classList.add('completed');
+                }
+                
+                btn.onclick = () => {
+                    currentDay = i;
+                    loadDay(i);
+                    renderDaysGrid();
+                };
+                
+                grid.appendChild(btn);
+            }
+        }
+
+        function loadDay(day) {
+            const data = challengeData[day];
+            if (!data) return;
+            
+            // Atualizar info da fase
+            document.getElementById('phaseBadge').className = `phase-badge fase-${data.phase}`;
+            document.getElementById('phaseBadge').textContent = data.phaseName;
+            document.getElementById('phaseTitle').textContent = data.phaseTitle;
+            document.getElementById('phaseDesc').textContent = data.phaseDesc;
+            
+            // Atualizar desafio especial
+            const specialEl = document.getElementById('specialChallenge');
+            if (data.special) {
+                specialEl.style.display = 'block';
+                document.getElementById('specialTitle').textContent = data.special.includes('🎊') ? '🎊 CONCLUSÃO' : '🎯 Desafio Especial';
+                document.getElementById('specialDesc').textContent = data.special;
+            } else {
+                specialEl.style.display = 'none';
+            }
+            
+            // Renderizar atividades
+            const container = document.getElementById('activitiesContainer');
+            container.innerHTML = '';
+            
+            const dayData = userData[`day${day}`] || { activities: {} };
+            
+            data.activities.forEach(activity => {
+                const item = document.createElement('div');
+                item.className = 'activity-item';
+                if (dayData.activities[activity.id]) {
+                    item.classList.add('completed');
+                }
+                
+                item.innerHTML = `
+                    <div class="activity-checkbox">
+                        <span class="checkmark">✓</span>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">${activity.title}</div>
+                        <div class="activity-desc">${activity.desc}</div>
+                    </div>
+                `;
+                
+                item.onclick = () => toggleActivity(day, activity.id);
+                container.appendChild(item);
+            });
+            
+            // Verificar se o dia está completo
+            checkDayCompletion(day);
+        }
+
+        function toggleActivity(day, activityId) {
+            if (!userData[`day${day}`]) {
+                userData[`day${day}`] = { activities: {} };
+            }
+            
+            const current = userData[`day${day}`].activities[activityId];
+            userData[`day${day}`].activities[activityId] = !current;
+            
+            saveData();
+            loadDay(day);
+            renderDaysGrid();
+            updateStats();
+            
+            // Verificar se completou o dia
+            setTimeout(() => checkDayCompletion(day), 100);
+        }
+
+        function checkDayCompletion(day) {
+            const data = challengeData[day];
+            const dayData = userData[`day${day}`];
+            
+            if (!dayData || !data) return;
+            
+            const allCompleted = data.activities.every(act => dayData.activities[act.id]);
+            
+            if (allCompleted && !dayData.completed) {
+                userData[`day${day}`].completed = true;
+                saveData();
+                renderDaysGrid();
+                updateStats();
+                showCelebration(day);
+            }
+        }
+
+        function showCelebration(day) {
+            const celebration = document.getElementById('celebration');
+            const text = day === 30 
+                ? '🎉 PARABÉNS! Você completou os 30 dias do desafio!' 
+                : `Dia ${day} concluído!`;
+            
+            document.getElementById('celebrationText').textContent = text;
+            celebration.classList.add('show');
+            
+            // Confetti effect
+            createConfetti();
+        }
+
+        function closeCelebration() {
+            document.getElementById('celebration').classList.remove('show');
+        }
+
+        function createConfetti() {
+            const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800', '#FF5722'];
+            
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.style.position = 'fixed';
+                    confetti.style.width = '10px';
+                    confetti.style.height = '10px';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.top = '-10px';
+                    confetti.style.borderRadius = '50%';
+                    confetti.style.zIndex = '3000';
+                    confetti.style.pointerEvents = 'none';
+                    document.body.appendChild(confetti);
+                    
+                    const duration = Math.random() * 3 + 2;
+                    confetti.animate([
+                        { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+                        { transform: `translateY(100vh) rotate(${Math.random() * 720}deg)`, opacity: 0 }
+                    ], {
+                        duration: duration * 1000,
+                        easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                    }).onfinish = () => confetti.remove();
+                }, i * 50);
+            }
+        }
+
+        function updateStats() {
+            let totalActivities = 0;
+            let completedActivities = 0;
+            let completedDays = 0;
+            
+            for (let day = 1; day <= 30; day++) {
+                const data = challengeData[day];
+                const dayData = userData[`day${day}`];
+                
+                if (data) {
+                    totalActivities += data.activities.length;
+                    
+                    if (dayData) {
+                        data.activities.forEach(act => {
+                            if (dayData.activities[act.id]) completedActivities++;
+                        });
+                        
+                        if (dayData.completed) completedDays++;
+                    }
+                }
+            }
+            
+            const percent = totalActivities > 0 ? Math.round((completedActivities / totalActivities) * 100) : 0;
+            
+            document.getElementById('totalProgress').style.width = percent + '%';
+            document.getElementById('completedDays').textContent = completedDays;
+            document.getElementById('totalPercent').textContent = percent + '%';
+            document.getElementById('daysCompleted').textContent = `${completedDays}/30`;
+            document.getElementById('activitiesCompleted').textContent = completedActivities;
+            document.getElementById('totalActivities').textContent = totalActivities;
+            
+            // Calcular sequência
+            let streak = 0;
+            for (let day = 1; day <= 30; day++) {
+                if (userData[`day${day}`] && userData[`day${day}`].completed) {
+                    streak++;
+                } else {
+                    break;
+                }
+            }
+            document.getElementById('currentStreak').textContent = streak;
+        }
+
+        function switchTab(tab) {
+            // Esconder todas as tabs
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            
+            // Mostrar tab selecionada
+            document.getElementById(`tab-${tab}`).classList.remove('hidden');
+            
+            // Atualizar botões
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+        }
+
+        function resetAllData() {
+            if (confirm('Tem certeza que deseja reiniciar todo o desafio? Todo o progresso será perdido!')) {
+                localStorage.removeItem('desafio30dias');
+                userData = { startDate: new Date().toISOString().split('T')[0] };
+                currentDay = 1;
+                renderDaysGrid();
+                loadDay(1);
+                updateStats();
+                alert('Desafio reiniciado! Boa sorte! 💪');
+            }
+        }
+
+        // Prevenir zoom em double tap (iOS)
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+        // ========== FUNÇÕES DO PERFIL ==========
+
+let tempPhotoData = null;
+
+// Carregar perfil ao iniciar
+function loadProfile() {
+    const profile = userData.profile || {};
+    
+    if (profile.name) {
+        document.getElementById('profileNameDisplay').textContent = profile.name;
+        document.getElementById('inputName').value = profile.name;
+    }
+    
+    if (profile.weight) {
+        document.getElementById('profileWeightDisplay').textContent = profile.weight + ' kg';
+        document.getElementById('inputWeight').value = profile.weight;
+    }
+    
+    if (profile.photo) {
+        showProfilePhoto(profile.photo);
+        document.getElementById('photoInput').dataset.photo = profile.photo;
+    }
+    
+    if (userData.startDate) {
+        const date = new Date(userData.startDate);
+        const formattedDate = date.toLocaleDateString('pt-BR');
+        document.getElementById('profileStartDate').textContent = formattedDate;
+    }
+}
+
+function showProfilePhoto(photoData) {
+    const photo = document.getElementById('profilePhoto');
+    const placeholder = document.getElementById('profilePhotoPlaceholder');
+    
+    photo.src = photoData;
+    photo.style.display = 'block';
+    placeholder.style.display = 'none';
+}
+
+function openEditProfile() {
+    const profile = userData.profile || {};
+    
+    document.getElementById('inputName').value = profile.name || '';
+    document.getElementById('inputWeight').value = profile.weight || '';
+    
+    if (profile.photo) {
+        tempPhotoData = profile.photo;
+        showUploadPreview(profile.photo);
+    } else {
+        tempPhotoData = null;
+        document.getElementById('photoUploadPreview').innerHTML = `
+            <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; font-size: 36px; color: white;">
+                👤
+            </div>
+        `;
+    }
+    
+    document.getElementById('profileModal').classList.add('show');
+}
+
+function closeEditProfile() {
+    document.getElementById('profileModal').classList.remove('show');
+    tempPhotoData = null;
+}
+
+function showUploadPreview(photoData) {
+    const preview = document.getElementById('photoUploadPreview');
+    preview.innerHTML = `<img src="${photoData}" alt="Preview">`;
+}
+
+// Handle photo upload
+document.getElementById('photoInput')?.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            tempPhotoData = e.target.result;
+            showUploadPreview(tempPhotoData);
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+function saveProfile() {
+    const name = document.getElementById('inputName').value.trim();
+    const weight = document.getElementById('inputWeight').value.trim();
+    
+    if (!name) {
+        alert('Por favor, digite seu nome!');
+        return;
+    }
+    
+    if (!userData.profile) {
+        userData.profile = {};
+    }
+    
+    userData.profile.name = name;
+    
+    if (weight) {
+        userData.profile.weight = parseFloat(weight);
+    }
+    
+    if (tempPhotoData) {
+        // Verificar tamanho da imagem (max 2MB)
+        const imageSize = (tempPhotoData.length * 3/4) / 1024 / 1024;
+        if (imageSize > 2) {
+            alert('A imagem é muito grande. Por favor, escolha uma imagem menor que 2MB.');
+            return;
+        }
+        userData.profile.photo = tempPhotoData;
+    }
+    
+    saveData();
+    loadProfile();
+    closeEditProfile();
+    
+    // Atualizar nome na header se existir
+    updateHeaderProfile();
+}
+
+function updateHeaderProfile() {
+    const profile = userData.profile || {};
+    const headerProfileName = document.getElementById('headerProfileName');
+    const headerProfilePhoto = document.getElementById('headerProfilePhoto');
+    
+    if (headerProfileName) {
+        headerProfileName.textContent = profile.name || 'Seu Nome';
+    }
+    
+    if (headerProfilePhoto && profile.photo) {
+        headerProfilePhoto.innerHTML = `<img src="${profile.photo}" alt="Perfil">`;
+    }
+}
+
+// Fechar modal ao clicar fora
+document.getElementById('profileModal')?.addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeEditProfile();
+    }
+});
+
+// ========== ATUALIZAR FUNÇÕES EXISTENTES ==========
+
+// Modificar a função loadData existente para carregar o perfil
+const originalLoadData = loadData;
+loadData = function() {
+    originalLoadData();
+    loadProfile();
+};
+    </script>
+</body>
+</html>
